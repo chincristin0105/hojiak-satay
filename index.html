@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hojiak Satay | Order Counter</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff8ed;
+      color: #2b211b;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      background: #2b211b;
+      color: white;
+      padding: 22px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: #f3b23c;
+      color: #2b211b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .brand h1 {
+      font-family: Georgia, serif;
+      font-size: 30px;
+    }
+
+    .brand p {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 3px;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+    }
+
+    .page-title {
+      margin-bottom: 25px;
+    }
+
+    .page-title h2 {
+      font-family: Georgia, serif;
+      font-size: 30px;
+    }
+
+    .page-title p {
+      color: #806f63;
+      margin-top: 5px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background: white;
+      border: 1px solid #eadbc9;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 25px rgba(70, 40, 20, 0.06);
+    }
+
+    .card-title {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    /* =========================
+       MENU ITEM
+    ========================= */
+
+    .menu-item {
+      border: 1px solid #eadbc9;
+      border-radius: 16px;
+      padding: 17px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 15px;
+      background: #fffdf9;
+    }
+
+    .menu-name {
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    .menu-price {
+      color: #806f63;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* =========================
+       FUZUK OPTIONS
+    ========================= */
+
+    .fuzuk-options {
+      display: flex;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .fuzuk-option {
+      border: none;
+      background: #eee7de;
+      color: #5c4d43;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .fuzuk-option.active {
+      background: #d84b2a;
+      color: white;
+    }
+
+    /* =========================
+       QUANTITY
+    ========================= */
+
+    .quantity {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .quantity button {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 10px;
+      background: #f2e8da;
+      font-size: 21px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #2b211b;
+    }
+
+    .quantity button:hover {
+      background: #e7d6c1;
+    }
+
+    .quantity-number {
+      min-width: 30px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    /* =========================
+       ORDER SUMMARY
+    ========================= */
+
+    .summary {
+      position: sticky;
+      top: 20px;
+    }
+
+    .customer-input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #eadbc9;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .customer-input:focus {
+      border-color: #d84b2a;
+    }
+
+    .order-line {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee3d6;
+    }
+
+    .order-line-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .order-line-small {
+      margin-top: 4px;
+      color: #806f63;
+      font-size: 12px;
+    }
+
+    .empty-order {
+      text-align: center;
+      color: #9a8a7e;
+      padding: 25px 0;
+      font-size: 14px;
+    }
+
+    /* =========================
+       TOTAL
+    ========================= */
+
+    .total-box {
+      border-top: 2px dashed #eadbc9;
+      margin-top: 15px;
+      padding-top: 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-label {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .total-price {
+      font-size: 28px;
+      font-weight: 900;
+      color: #d84b2a;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .action-button {
+      padding: 13px;
+      border-radius: 11px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .new-button {
+      background: #2b211b;
+      color: white;
+    }
+
+    .clear-button {
+      background: #f6dfd8;
+      color: #9b2e19;
+    }
+
+    .action-button:hover {
+      opacity: 0.85;
+    }
+
+    /* =========================
+       INFO
+    ========================= */
+
+    .saved-info {
+      text-align: center;
+      color: #9a8a7e;
+      font-size: 11px;
+      margin-top: 13px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #9a8a7e;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+      header {
+        padding: 18px;
+      }
+
+      .brand h1 {
+        font-size: 24px;
+      }
+
+      .brand p {
+        font-size: 11px;
+      }
+
+      .logo {
+        width: 48px;
+        height: 48px;
+        font-size: 17px;
+      }
+
+      .container {
+        padding: 20px 14px;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: static;
+      }
+
+      .menu-item {
+        grid-template-columns: 1fr;
+      }
+
+      .quantity {
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+  <div class="brand">
+
+    <div class="logo">
+      HJ
+    </div>
+
+    <div>
+      <h1>Hojiak Satay</h1>
+      <p>Seremban · Order Counter</p>
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="container">
+
+  <div class="page-title">
+
+    <h2>Take Order</h2>
+
+    <p>
+      Select the satay quantity below.
+    </p>
+
+  </div>
+
+
+  <div class="main-grid">
+
+
+    <!-- =========================
+         MENU
+    ========================= -->
+
+    <section class="card">
+
+      <div class="card-title">
+        Satay Menu
+      </div>
+
+
+      <!-- LAMB -->
+
+      <div class="menu-item">
+
+        <div>
+
+          <div class="menu-name">
+            🐑 Lamb
+          </div>
+
+          <div class="menu-price">
+            RM 2.20 / stick
+          </div>
+
+        </div>
+
+
+        <div class="quantity">
+
+          <button onclick="changeQuantity('lamb', -1)">
+            −
+          </button>
+
+          <span
+            id="lambQuantity"
+            class="quantity-number"
+          >
+            0
+          </span>
+
+          <button onclick="changeQuantity('lamb', 1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- CHICKEN -->
+
+      <div class="menu-item">
+
+        <div>
+
+          <div class="menu-name">
+            🍗 Chicken
+          </div>
+
+          <div class="menu-price">
+            RM 1.40 / stick
+          </div>
+
+        </div>
+
+
+        <div class="quantity">
+
+          <button onclick="changeQuantity('chicken', -1)">
+            −
+          </button>
+
+          <span
+            id="chickenQuantity"
+            class="quantity-number"
+          >
+            0
+          </span>
+
+          <button onclick="changeQuantity('chicken', 1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- PORK -->
+
+      <div class="menu-item">
+
+        <div>
+
+          <div class="menu-name">
+            🐷 Pork
+          </div>
+
+          <div class="menu-price">
+            RM 1.50 / stick
+          </div>
+
+        </div>
+
+
+        <div class="quantity">
+
+          <button onclick="changeQuantity('pork', -1)">
+            −
+          </button>
+
+          <span
+            id="porkQuantity"
+            class="quantity-number"
+          >
+            0
+          </span>
+
+          <button onclick="changeQuantity('pork', 1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- FUZUK -->
+
+      <div class="menu-item">
+
+        <div>
+
+          <div class="menu-name">
+            🌱 Fuzuk
+          </div>
+
+          <div class="menu-price">
+            RM 1.50 / stick
+          </div>
+
+
+          <div class="fuzuk-options">
+
+            <button
+              id="spicyButton"
+              class="fuzuk-option active"
+              onclick="setFuzukType('spicy')"
+            >
+              Spicy
+            </button>
+
+            <button
+              id="nonSpicyButton"
+              class="fuzuk-option"
+              onclick="setFuzukType('nonspicy')"
+            >
+              Non-spicy
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="quantity">
+
+          <button onclick="changeQuantity('fuzuk', -1)">
+            −
+          </button>
+
+          <span
+            id="fuzukQuantity"
+            class="quantity-number"
+          >
+            0
+          </span>
+
+          <button onclick="changeQuantity('fuzuk', 1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ORDER SUMMARY
+    ========================= -->
+
+    <section class="card summary">
+
+      <div class="card-title">
+        Current Order
+      </div>
+
+
+      <input
+        id="customerName"
+        class="customer-input"
+        type="text"
+        placeholder="Customer name (optional)"
+        oninput="saveOrder()"
+      >
+
+
+      <div id="orderLines">
+
+        <div class="empty-order">
+          No items added yet.
+        </div>
+
+      </div>
+
+
+      <!-- TOTAL -->
+
+      <div class="total-box">
+
+        <div class="total-label">
+          TOTAL
+        </div>
+
+        <div
+          id="totalPrice"
+          class="total-price"
+        >
+          RM 0.00
+        </div>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="buttons">
+
+        <button
+          class="action-button new-button"
+          onclick="newOrder()"
+        >
+          ＋ New Order
+        </button>
+
+        <button
+          class="action-button clear-button"
+          onclick="clearOrder()"
+        >
+          Clear
+        </button>
+
+      </div>
+
+
+      <div class="saved-info">
+        Order automatically saved on this device.
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<footer>
+  Hojiak Satay · Seremban
+</footer>
+
+
+
+<script>
+
+/* =========================
+   MENU PRICES
+========================= */
+
+const prices = {
+
+  lamb: 2.20,
+
+  chicken: 1.40,
+
+  pork: 1.50,
+
+  fuzuk: 1.50
+
+};
+
+
+/* =========================
+   CURRENT ORDER
+========================= */
+
+let order = {
+
+  lamb: 0,
+
+  chicken: 0,
+
+  pork: 0,
+
+  fuzuk: 0,
+
+  fuzukType: "spicy",
+
+  customerName: ""
+
+};
+
+
+/* =========================
+   CHANGE QUANTITY
+========================= */
+
+function changeQuantity(item, amount) {
+
+  order[item] += amount;
+
+  if (order[item] < 0) {
+
+    order[item] = 0;
+
+  }
+
+  render();
+
+  saveOrder();
+
+}
+
+
+/* =========================
+   FUZUK TYPE
+========================= */
+
+function setFuzukType(type) {
+
+  order.fuzukType = type;
+
+
+  const spicyButton =
+    document.getElementById("spicyButton");
+
+  const nonSpicyButton =
+    document.getElementById("nonSpicyButton");
+
+
+  if (type === "spicy") {
+
+    spicyButton.classList.add("active");
+
+    nonSpicyButton.classList.remove("active");
+
+  }
+
+  else {
+
+    spicyButton.classList.remove("active");
+
+    nonSpicyButton.classList.add("active");
+
+  }
+
+
+  render();
+
+  saveOrder();
+
+}
+
+
+/* =========================
+   RENDER ORDER
+========================= */
+
+function render() {
+
+
+  /* QUANTITY NUMBERS */
+
+  document.getElementById("lambQuantity").textContent =
+    order.lamb;
+
+  document.getElementById("chickenQuantity").textContent =
+    order.chicken;
+
+  document.getElementById("porkQuantity").textContent =
+    order.pork;
+
+  document.getElementById("fuzukQuantity").textContent =
+    order.fuzuk;
+
+
+  /* CUSTOMER */
+
+  document.getElementById("customerName").value =
+    order.customerName;
+
+
+  /* ORDER LINES */
+
+  const orderLines =
+    document.getElementById("orderLines");
+
+
+  let html = "";
+
+  let total = 0;
+
+
+  /* LAMB */
+
+  if (order.lamb > 0) {
+
+    const subtotal =
+      order.lamb * prices.lamb;
+
+    total += subtotal;
+
+
+    html += `
+
+      <div class="order-line">
+
+        <div class="order-line-top">
+
+          <span>
+            Lamb × ${order.lamb}
+          </span>
+
+          <span>
+            RM ${subtotal.toFixed(2)}
+          </span>
+
+        </div>
+
+        <div class="order-line-small">
+          RM 2.20 each
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* CHICKEN */
+
+  if (order.chicken > 0) {
+
+    const subtotal =
+      order.chicken * prices.chicken;
+
+    total += subtotal;
+
+
+    html += `
+
+      <div class="order-line">
+
+        <div class="order-line-top">
+
+          <span>
+            Chicken × ${order.chicken}
+          </span>
+
+          <span>
+            RM ${subtotal.toFixed(2)}
+          </span>
+
+        </div>
+
+        <div class="order-line-small">
+          RM 1.40 each
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* PORK */
+
+  if (order.pork > 0) {
+
+    const subtotal =
+      order.pork * prices.pork;
+
+    total += subtotal;
+
+
+    html += `
+
+      <div class="order-line">
+
+        <div class="order-line-top">
+
+          <span>
+            Pork × ${order.pork}
+          </span>
+
+          <span>
+            RM ${subtotal.toFixed(2)}
+          </span>
+
+        </div>
+
+        <div class="order-line-small">
+          RM 1.50 each
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* FUZUK */
+
+  if (order.fuzuk > 0) {
+
+    const subtotal =
+      order.fuzuk * prices.fuzuk;
+
+    total += subtotal;
+
+
+    const type =
+      order.fuzukType === "spicy"
+        ? "Spicy"
+        : "Non-spicy";
+
+
+    html += `
+
+      <div class="order-line">
+
+        <div class="order-line-top">
+
+          <span>
+            Fuzuk (${type}) × ${order.fuzuk}
+          </span>
+
+          <span>
+            RM ${subtotal.toFixed(2)}
+          </span>
+
+        </div>
+
+        <div class="order-line-small">
+          RM 1.50 each
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* EMPTY */
+
+  if (html === "") {
+
+    html = `
+
+      <div class="empty-order">
+
+        No items added yet.
+
+      </div>
+
+    `;
+
+  }
+
+
+  orderLines.innerHTML = html;
+
+
+  /* TOTAL */
+
+  document.getElementById("totalPrice").textContent =
+    "RM " + total.toFixed(2);
+
+}
+
+
+/* =========================
+   SAVE ORDER
+========================= */
+
+function saveOrder() {
+
+  order.customerName =
+    document.getElementById("customerName").value;
+
+
+  localStorage.setItem(
+    "hojiakSatayOrder",
+    JSON.stringify(order)
+  );
+
+}
+
+
+/* =========================
+   LOAD SAVED ORDER
+========================= */
+
+function loadOrder() {
+
+  const saved =
+    localStorage.getItem("hojiakSatayOrder");
+
+
+  if (saved) {
+
+    try {
+
+      const savedOrder =
+        JSON.parse(saved);
+
+      order = {
+        ...order,
+        ...savedOrder
+      };
+
+    }
+
+    catch (error) {
+
+      console.log("Unable to load order.");
+
+    }
+
+  }
+
+
+  render();
+
+}
+
+
+/* =========================
+   CLEAR ORDER
+========================= */
+
+function clearOrder() {
+
+  const confirmClear =
+    confirm("Clear this order?");
+
+
+  if (!confirmClear) {
+
+    return;
+
+  }
+
+
+  order = {
+
+    lamb: 0,
+
+    chicken: 0,
+
+    pork: 0,
+
+    fuzuk: 0,
+
+    fuzukType: "spicy",
+
+    customerName: ""
+
+  };
+
+
+  saveOrder();
+
+  render();
+
+}
+
+
+/* =========================
+   NEW ORDER
+========================= */
+
+function newOrder() {
+
+  order = {
+
+    lamb: 0,
+
+    chicken: 0,
+
+    pork: 0,
+
+    fuzuk: 0,
+
+    fuzukType: "spicy",
+
+    customerName: ""
+
+  };
+
+
+  saveOrder();
+
+  render();
+
+}
+
+
+/* =========================
+   START WEBSITE
+========================= */
+
+loadOrder();
+
+</script>
+
+</body>
+</html>
